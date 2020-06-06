@@ -55,6 +55,22 @@ app.post("/houses", (req, res) => {
     });
 });
 
+//add book rooms API
+app.post("/bookRooms", (req, res) => {
+    const bookRooms = req.body;
+    console.log(bookRooms);
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect((err) => {
+        const collection = client.db("aircnc").collection("booked");
+        // perform actions on the collection object
+        collection.insertOne(bookRooms, (err, result) => {
+            err ? console.log(err) : res.send(result.ops[0]);
+        });
+        console.log("data added");
+        client.close();
+    });
+});
+
 //get reviews data
 app.get("/reviews", (req, res) => {
     const client = new MongoClient(uri, { useNewUrlParser: true });
